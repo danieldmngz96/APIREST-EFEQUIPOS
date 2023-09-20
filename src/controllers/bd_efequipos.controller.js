@@ -5,7 +5,7 @@ const index = require("./index");
 const bd_efequipos = conexion.bd_efequipos;
 const router = express.Router(); */
 import { Router } from "express";
-import { pool2 } from "../db.js";
+import { pool2, pool } from "../db.js";
 
 
 const router = Router();
@@ -197,8 +197,8 @@ export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const sql = `SELECT * FROM users WHERE email = ? AND password = ?`;
-    const [rows] = await pool2.query(sql, [email, password]);
+    const sql = `SELECT * FROM usuarios WHERE correo = ? AND clave = ?`;
+    const [rows] = await pool.query(sql, [email, password]);
 
     if (rows.length === 0) {
       res.status(401).json({ error: "Credenciales inválidas" });

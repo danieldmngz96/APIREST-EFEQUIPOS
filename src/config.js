@@ -11,7 +11,7 @@ export const DB_PORT = process.env.DB_PORT || 3306;
 export const PORT = process.env.PORT || 3000;
 export const DB_HOST = process.env.DB_HOST || "34.136.246.165";
 export const DB_USER = process.env.DB_USER || "daniel";
-export const DB_PASSWORD = process.env.DB_PASSWORD || "Prueba1234*";
+export const DB_PASSWORD = process.env.DB_PASSWORD || "Daniel1234*";
 export const DB_DATABASE = process.env.DB_DATABASE || "almacen" ;
 export const DB_PORT = process.env.DB_PORT || 3306;
 
@@ -26,7 +26,7 @@ export const DB_PORT2 = process.env.DB_PORT2 || 3306; */
 export const PORT2 = process.env.PORT2 || 3000;
 export const DB_HOST2 = process.env.DB_HOST2 || "34.136.246.165";
 export const DB_USER2 = process.env.DB_USER2 || "daniel";
-export const DB_PASSWORD2 = process.env.DB_PASSWORD2 || "Prueba1234*";
+export const DB_PASSWORD2 = process.env.DB_PASSWORD2 || "Daniel1234*";
 export const DB_DATABASE2 = process.env.DB_DATABASE2 || "bd_efequipos";
 export const DB_PORT2 = process.env.DB_PORT2 || 3306;
 
