@@ -141,19 +141,6 @@ export const updateInventario = async (req, res) => {
 
 
 //----------------------Login Registrar Usuario --------------------//
-//Registrar Usuario
-
-/* router.post("/register", (req, res) => {
-  const { email, password, name } = req.body;
-
-  let sql = `insert into users(email,password,name) values('${email}','${password}','${name}')`;
-   pool2.query(sql, (err, rows, fields) => {
-    if (err) throw err;
-    else {
-      res.json({ status: "Registrado con exito" });
-    }
-  });
-}); */
 //Registar Usuario 2.0
 export const registerUser = async (req, res) => {
   const { email, password, name } = req.body;
@@ -197,7 +184,7 @@ export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const sql = `SELECT * FROM usuarios WHERE correo = ? AND clave = ?`;
+    const sql = `INSERT INTO despachos (cod_obra, cod_cont, fec_des, despachador, obs,conductor_veh, tipo_veh, autorizador,peso_total, area_total, placa_veh, descripcion, cantidad) VALUES (?, ?)`;
     const [rows] = await pool.query(sql, [email, password]);
 
     if (rows.length === 0) {

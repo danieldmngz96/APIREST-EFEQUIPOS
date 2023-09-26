@@ -251,4 +251,31 @@ export const deleteEmpleado = async (req, res) => {
     return res.status(500).json({ message: "error goes wrong" });
   }
 };
+
+export const Postpqrs = async (req, res) => {
+  const { name, direccion, phone, city, country, email, pqrs } = req.body;
+
+  try {
+    const sql = `INSERT INTO pqr_i (name, direccion, phone, city, country,email, pqrs, ) VALUES (?, ?)`;
+    const [rows] = await pool.query(sql, [name, direccion, phone, city, country, email, pqrs ]);
+
+    if (rows.length === 0) {
+      res.status(401).json({ error: "Pqrs invalido" });
+    } else {
+      const pqrs = {
+        name: rows[0].name,
+        direccion: rows[0].direccion,
+        phone: rows[0].phone,
+        city: rows[0].city,
+        country: rows[0].country,
+        email: rows[0].email,
+        pqrs: rows[0].pqrs,
+      };
+      res.status(200).json({ message: "Envio de pqrs exitoso", pqrs });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
 export default router;
