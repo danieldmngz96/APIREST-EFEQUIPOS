@@ -251,18 +251,18 @@ export const deleteEmpleado = async (req, res) => {
     return res.status(500).json({ message: "error goes wrong" });
   }
 };
-
+//Enviar pqrs
 export const Postpqrs = async (req, res) => {
   const { name, direccion, phone, city, country, email, pqrs } = req.body;
 
   try {
-    const sql = `INSERT INTO pqr_i (name, direccion, phone, city, country,email, pqrs, ) VALUES (?, ?)`;
-    const [rows] = await pool.query(sql, [name, direccion, phone, city, country, email, pqrs ]);
-
+    const sql = ` INSERT INTO pqr_i (nombre, direccion, telefono, celular, ciudad, pais, e_mail, obs) VALUES (?,?,?,?,?,?,?,?)`;
+    const [rows] = await pool.query(sql, [name, direccion, phone, phone, city, country, email, pqrs ]);
+    console.log(rows);
     if (rows.length === 0) {
       res.status(401).json({ error: "Pqrs invalido" });
     } else {
-      const pqrs = {
+     /*  const pqrs = {
         name: rows[0].name,
         direccion: rows[0].direccion,
         phone: rows[0].phone,
@@ -270,12 +270,38 @@ export const Postpqrs = async (req, res) => {
         country: rows[0].country,
         email: rows[0].email,
         pqrs: rows[0].pqrs,
-      };
-      res.status(200).json({ message: "Envio de pqrs exitoso", pqrs });
+      }; */
+      res.status(200).json({ message: "Envio de pqrs exitoso", id: rows["insertId"] });
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    console.error("Error de base de datos:", error);
+    res.status(500).json({ error: "Error interno del servidor", details: error.message });
+  }
+};
+
+//Obtener pqrs 
+export const getPqrs = async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Página actual
+  const limit = parseInt(req.query.limit) || 20; // Número de registros por página
+  const offset = (page - 1) * limit; // Desplazamiento
+
+  try {
+    // Consulta para obtener los registros de la página actual
+    let sql = `SELECT * FROM pqr_i LIMIT ${limit} OFFSET ${offset}`;
+    const [rows] = await pool.query(sql);
+
+    // Consulta para contar el total de registros en la tabla
+    sql = "SELECT COUNT(*) AS count FROM pqr_i";
+    const [result] = await pool.query(sql);
+    const total = result[0].count;
+    const totalPages = Math.ceil(total / limit);
+
+    // Devolver los resultados y la información de paginación en un objeto JSON
+    res.json({ total, totalPages, page, limit, offset, rows });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error en controlador getPqrs" });
   }
 };
 export default router;
