@@ -10,8 +10,8 @@ export const DB_PORT = process.env.DB_PORT || 3306;
  */
 export const PORT = process.env.PORT || 3000;
 export const DB_HOST = process.env.DB_HOST || "34.136.246.165";
-export const DB_USER = process.env.DB_USER || "daniel";
-export const DB_PASSWORD = process.env.DB_PASSWORD || "Daniel1234*";
+export const DB_USER = process.env.DB_USER || "efequipos";
+export const DB_PASSWORD = process.env.DB_PASSWORD || "}0)L{04h`l^gcV=/";
 export const DB_DATABASE = process.env.DB_DATABASE || "almacen" ;
 export const DB_PORT = process.env.DB_PORT || 3306;
 

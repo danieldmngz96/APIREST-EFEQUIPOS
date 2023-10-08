@@ -15,7 +15,10 @@ import {
   getClienteById,
   //pqrs
   Postpqrs,
-  getPqrs
+  getPqrs,
+  //Contratos
+  getContratos,
+  loginUser,
 } from "../controllers/almacen.controller.js";
 
 const router = Router();
@@ -51,6 +54,11 @@ router.get("/cliente/:id", addClienteId);
 router.post("/Postpqrs", Postpqrs);
 //Get de pqrs
 router.get("/getPqrs", getPqrs);
-
+//---------- agregamos rutas para Contratos--------
+//Get de pqrs
+router.get("/getContratos", getContratos);
+//////////////////////////////////////////////////////
+//Login User
+router.post("/login", loginUser);
 
 export default router;

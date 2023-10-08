@@ -181,25 +181,25 @@ export const registerUser = async (req, res) => {
 }); */
 //Post de login 2.0
 export const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { correo, clave } = req.body;
 
   try {
-    const sql = `INSERT INTO despachos (cod_obra, cod_cont, fec_des, despachador, obs,conductor_veh, tipo_veh, autorizador,peso_total, area_total, placa_veh, descripcion, cantidad) VALUES (?, ?)`;
-    const [rows] = await pool.query(sql, [email, password]);
+    const sql = `INSERT INTO usuarios (correo, clave, name) VALUES (?, ?, ?)`;
+    const [rows] = await pool.query(sql, [correo, clave]);
 
     if (rows.length === 0) {
       res.status(401).json({ error: "Credenciales inválidas" });
     } else {
       const user = {
-        id: rows[0].id,
-        name: rows[0].name,
-        email: rows[0].email,
+       // id: rows[0].id,
+        correo: rows[0].name,
+        clave: rows[0].email,
       };
       res.status(200).json({ message: "Inicio de sesión exitoso", user });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    res.status(500).json({ error: "Error interno del servidor en loginUser" });
   }
 };
 
