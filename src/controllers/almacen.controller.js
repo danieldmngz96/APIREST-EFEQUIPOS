@@ -354,5 +354,45 @@ export const loginUser = async (req, res) => {
   }
 };
 
+//GET PARA OBTENER AL INVENTARIO 3.5
+export const getProductos = async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Página actual
+  const limit = parseInt(req.query.limit) || 10; // Número de productos por página
+  const offset = (page - 1) * limit; // Desplazamiento
+
+  try {
+    const [rows] = await pool.query(
+      `SELECT * FROM almacen.productos LIMIT ? OFFSET ?;`,
+      [limit, offset]
+    );
+
+    if (rows.length <= 0) {
+      return res.status(404).json({ message: "No se encontraron productos en el inventario" });
+    } else {
+      return res.status(200).json(rows); // Enviar los productos encontrados como respuesta
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error en la consulta del inventario" });
+  }
+};
+
+
+//GET POR ID DE PRODUCTOS 3.0
+export const getInventarioById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [rows] = await pool.query(`SELECT * FROM almacen.productos where cod_prod  = ${id};`);
+    if (rows.length <= 0) {
+      return res.status(404).json({ message: "No se encontraron el inventario" });
+    }
+  } catch (error) {
+    console.error("Error en la consulta de la base de datos:", error);
+    return res.status(500).json({ message: "Error en consulta de inventario por ID" });
+  }
+  
+};
+
+
 
 export default router;

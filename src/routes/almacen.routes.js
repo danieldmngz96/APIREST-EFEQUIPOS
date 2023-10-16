@@ -19,6 +19,9 @@ import {
   //Contratos
   getContratos,
   loginUser,
+  //Productos
+  getProductos,
+  getInventarioById
 } from "../controllers/almacen.controller.js";
 
 const router = Router();
@@ -60,5 +63,10 @@ router.get("/getContratos", getContratos);
 //////////////////////////////////////////////////////
 //Login User
 router.post("/login", loginUser);
+//get productos
+router.get("/getProductos", getProductos);
+//por id productos
+router.get("/getInventarioById/:id", getInventarioById);
+
 
 export default router;

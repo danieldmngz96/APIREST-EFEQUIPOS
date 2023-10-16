@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   //Inventarios
   getInventario,
-  getInventarioById,
+  // getInventarioById,
   addInventario,
   deleteEquipo,
   updateInventario,
@@ -18,7 +18,7 @@ const router = Router();
 // GET all inventario
 router.get("/inventario", getInventario);
 // GET all inventario por ID
-router.get("/inventario/:id", getInventarioById);
+// router.get("/inventario/:id", getInventarioById);
 // INSERT un inventario
 router.post("/add-inventario", addInventario);
 //Modificar inventario

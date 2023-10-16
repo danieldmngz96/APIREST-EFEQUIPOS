@@ -45,7 +45,7 @@ export const getInventario = async (req, res) => {
     }
   });
 }); */
-// get un inventario obtener por id 2.0
+/* // get un inventario obtener por id 2.0
 export const getInventarioById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -56,7 +56,7 @@ export const getInventarioById = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: "Error en consulta de inventario por ID" });
   }
-};
+}; */
 
 //agregar Inventario
 /* router.post("/add-inventario", (req, res) => {
