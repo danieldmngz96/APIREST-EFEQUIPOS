@@ -379,18 +379,19 @@ export const getProductos = async (req, res) => {
 
 
 //GET POR ID DE PRODUCTOS 3.0
-export const getInventarioById = async (req, res) => {
-  const { id } = req.params;
+export const getProductosById = async (req, res) => {
+  const id = parseInt(req.params.id);
   try {
-    const [rows] = await pool.query(`SELECT * FROM almacen.productos where cod_prod  = ${id};`);
+    const [rows] = await pool.query(`SELECT * FROM almacen.productos  WHERE cod_prod = ?;`,[id]);
     if (rows.length <= 0) {
-      return res.status(404).json({ message: "No se encontraron el inventario" });
+      return res.status(404).json({ message: "No se encontraron productos en el inventario" });
+    } else {
+      return res.status(200).json(rows); // Enviar los productos encontrados como respuesta
     }
   } catch (error) {
-    console.error("Error en la consulta de la base de datos:", error);
-    return res.status(500).json({ message: "Error en consulta de inventario por ID" });
+    console.error(error);
+    return res.status(500).json({ message: "Error en la consulta del inventario" });
   }
-  
 };
 
 

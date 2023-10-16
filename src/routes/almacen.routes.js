@@ -21,7 +21,7 @@ import {
   loginUser,
   //Productos
   getProductos,
-  getInventarioById
+  getProductosById
 } from "../controllers/almacen.controller.js";
 
 const router = Router();
@@ -66,7 +66,7 @@ router.post("/login", loginUser);
 //get productos
 router.get("/getProductos", getProductos);
 //por id productos
-router.get("/getInventarioById/:id", getInventarioById);
+router.get("/getProductosById/:id", getProductosById);
 
 
 export default router;
