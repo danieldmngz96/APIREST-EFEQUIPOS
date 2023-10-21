@@ -18,6 +18,8 @@ import {
   getPqrs,
   //Contratos
   getContratos,
+  //login
+  getUserInfo,
   loginUser,
   //Productos
   getProductos,
@@ -63,6 +65,8 @@ router.get("/getContratos", getContratos);
 //////////////////////////////////////////////////////
 //Login User
 router.post("/login", loginUser);
+//Trae todos los USUARIOS
+router.get("/info", getUserInfo);
 //get productos
 router.get("/getProductos", getProductos);
 //por id productos

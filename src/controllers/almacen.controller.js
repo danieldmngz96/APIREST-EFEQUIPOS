@@ -353,6 +353,27 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor en loginUser de almacen" });
   }
 };
+//GET user 2.0 
+export const getUserInfo = async (req, res) => {
+  const { nombre } = req.query;
+  
+
+  try {
+    const sql = "SELECT * FROM usuarios WHERE nombre = ?";
+    const [rows] = await pool.query(sql, [nombre]);
+  
+    if (rows && rows.length > 0) {
+      // Maneja los resultados aquí
+      res.json(rows);
+    } else {
+      res.json({ message: "No se encontraron usuarios con ese nombre." });
+    }
+  } catch (error) {
+    console.error("Error al ejecutar la consulta:", error);
+    res.status(500).json({ error: "Ocurrió un error al procesar la solicitud." });
+  }
+  
+};
 
 //GET PARA OBTENER AL INVENTARIO 3.5
 export const getProductos = async (req, res) => {
@@ -393,6 +414,7 @@ export const getProductosById = async (req, res) => {
     return res.status(500).json({ message: "Error en la consulta del inventario" });
   }
 };
+
 
 
 

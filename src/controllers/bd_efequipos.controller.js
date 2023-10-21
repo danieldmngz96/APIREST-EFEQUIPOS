@@ -215,7 +215,7 @@ export const loginUser = async (req, res) => {
   });
 }); */
 //GET user 2.0 
-export const getUserInfo = async (req, res) => {
+/* export const getUserInfo = async (req, res) => {
   const { name } = req.query;
 
   try {
@@ -225,7 +225,7 @@ export const getUserInfo = async (req, res) => {
   } catch (error) {
     throw error;
   }
-};
+}; */
 
 //get user comparational
 /* router.get("/validateEmail/:email", (req, res) => {

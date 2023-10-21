@@ -9,7 +9,7 @@ import {
   //LOGIN
   registerUser,
   loginUser,
-  getUserInfo,
+  //getUserInfo,
   validateEmail
 } from "../controllers/bd_efequipos.controller.js";
 
@@ -32,7 +32,7 @@ router.post("/register", registerUser);
 //Login User
 router.post("/login", loginUser);
 //Trae todos los USUARIOS
-router.get("/info", getUserInfo);
+//router.get("/info", getUserInfo);
 //get validar email
 router.get("/validateEmail/:email", validateEmail);
 
