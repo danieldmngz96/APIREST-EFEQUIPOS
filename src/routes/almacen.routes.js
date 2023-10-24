@@ -25,7 +25,8 @@ import {
   //Productos
   getProductos,
   getProductosById,
-  addProducto
+  addProducto,
+  updateProductos
 } from "../controllers/almacen.controller.js";
 
 const router = Router();
@@ -73,6 +74,8 @@ router.get("/info", getUserInfo);
 router.get("/getProductos", getProductos);
 //por id productos
 router.get("/getProductosById/:id", getProductosById);
+//Modificar produco
+router.put("/updateProductos/:id", updateProductos);
 //Contratos
 router.post("/addContratos", addContrato);
 // INSERT un productos

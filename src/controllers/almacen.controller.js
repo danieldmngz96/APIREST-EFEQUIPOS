@@ -101,8 +101,9 @@ export const getCliente = async (req, res) => {
   const limit = parseInt(req.query.limit) || 10; // Número de productos por página
   const offset = (page - 1) * limit; // Desplazamiento
   try {
-    const [rows] = await pool.query(`SELECT * FROM clientes LIMIT ? OFFSET ?;`,
-    [limit, offset]);
+    const [rows] = await pool.query(`SELECT * FROM almacen.clientes LIMIT ? OFFSET ?;`,
+    [limit, offset]
+    );
     if (rows.length <= 0) {
       return res.status(404).json({ message: "No se encontraron clientes en getCliente" });
     } else {
@@ -415,6 +416,22 @@ export const getProductosById = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Error en la consulta del inventario" });
+  }
+};
+//Modificar Inventario 2.0 
+export const updateProductos = async (req, res) => {
+  const { id } = req.params;
+  const { tipo, descripcion, cantidad, valor_uni, peso_uni, area_total , area , peso_total } = req.body;
+
+  try {
+    const sql = `UPDATE productos 
+    SET tipo = ?, descripcion = ?, cantidad = ?, valor_uni = ?, peso_uni = ?, area_total = ?, area = ?, peso_total = ? 
+    WHERE cod_prod = ?;
+    `;
+    const [rows] = await pool.query(sql, [tipo, descripcion, cantidad, valor_uni, peso_uni, area_total, area, peso_total, id]);
+     return res.status(200).json({ status: "Producto modificado" });
+  } catch (error) {
+    return res.status(500).json({ message: "Error al modificar el Producto" });
   }
 };
 //add Contrato 1.0
