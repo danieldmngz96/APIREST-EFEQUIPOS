@@ -97,12 +97,17 @@ export const createDespacho = async (req, res) => {
 //---------- agregamos rutas para clientes--------
 //get clientes
 export const getCliente = async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Página actual
+  const limit = parseInt(req.query.limit) || 10; // Número de productos por página
+  const offset = (page - 1) * limit; // Desplazamiento
   try {
-    const [rows] = await pool.query("SELECT * FROM almacen.clientes;");
-    if (!rows) {
-      return res.status(404).json({ message: "No se encontraron clientes" });
+    const [rows] = await pool.query(`SELECT * FROM clientes LIMIT ? OFFSET ?;`,
+    [limit, offset]);
+    if (rows.length <= 0) {
+      return res.status(404).json({ message: "No se encontraron clientes en getCliente" });
+    } else {
+      return res.status(200).json(rows); // Enviar los productos encontrados como respuesta
     }
-    res.json(rows);
   } catch (error) {
     return res.status(500).json({ message: "Error en getCliente", error: error });
   }
