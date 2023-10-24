@@ -18,6 +18,7 @@ import {
   getPqrs,
   //Contratos
   getContratos,
+  addContrato,
   //login
   getUserInfo,
   loginUser,
@@ -71,6 +72,8 @@ router.get("/info", getUserInfo);
 router.get("/getProductos", getProductos);
 //por id productos
 router.get("/getProductosById/:id", getProductosById);
+//Contratos
+router.post("/add-contratos", addContrato);
 
 
 export default router;

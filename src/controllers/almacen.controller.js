@@ -5,7 +5,7 @@ const router = Router();
 //get empleado
 export const getEmpleados = async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM empleados");
+    const [rows] = await pool.query("SELECT * FROM almacen.empleados");
     return res.status(200).json(rows);
   } catch (error) {
     return res.status(500).json({ message: "Error en consulta empleados" });
@@ -170,7 +170,7 @@ export const updateCliente = async (req, res) => {
     return res.status(500).json({ message: "Error en updateCliente" });
   }
 };
-//addCliente 2.0
+//addCliente 3.0
 export const addCliente = async (req, res) => {
   try {
     const {
@@ -183,19 +183,17 @@ export const addCliente = async (req, res) => {
       ciudad,
       departamento,
     } = req.body;
+
+    // Insertar el cliente en la base de datos
     const [rows] = await pool.query(
-      "INSERT INTO clientes(nom_cliente, direccion, nombre_obra, cargo_obra, celular, NIT , ciudad, departamento) values(' VALUES (?, ?)",
-      [nom_cliente,
-        direccion,
-        nombre_obra,
-        cargo_obra,
-        celular,
-        NIT,
-        ciudad,
-        departamento,]
+      "INSERT INTO clientes(nom_cliente, direccion, nombre_obra, cargo_obra, celular, NIT, ciudad, departamento) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [nom_cliente, direccion, nombre_obra, cargo_obra, celular, NIT, ciudad, departamento]
     );
-    res.status(201).json({ id: rows.insertId, name, salary });
+
+    // Enviar la respuesta con el ID del cliente insertado
+    res.status(201).json({ id: rows.insertId });
   } catch (error) {
+    console.error(error); // Registra el error en la consola para fines de depuración
     return res.status(500).json({ message: "Error en el controlador" });
   }
 };
@@ -412,6 +410,30 @@ export const getProductosById = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Error en la consulta del inventario" });
+  }
+};
+//add Contrato 1.0
+export const addContrato = async (req, res) => {
+  try {
+    const {
+      nombre,
+      cod_cli,
+      fec_ini,
+      fec_fin,
+      estado,
+    } = req.body;
+
+    // Insertar el contrato en la base de datos
+    const [rows] = await pool.query(
+      "INSERT INTO contratos(nombre, cod_cli, fec_ini, fec_fin, estado) VALUES (?, ?, ?, ?, ?)",
+      [nombre, cod_cli, fec_ini, fec_fin, estado]
+    );
+
+    // Enviar la respuesta con el ID del contrato insertado
+    res.status(201).json({ id: rows.insertId });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error en el controlador" });
   }
 };
 
