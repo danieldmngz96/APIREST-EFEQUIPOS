@@ -351,18 +351,18 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor en loginUser de almacen" });
   }
 };
-//GET user 2.0 
+//GET user 2.5
 export const getUserInfo = async (req, res) => {
-  const { nombre } = req.query;
-  
-
+  //const { nombre } = req.query;
+  const { correo } = req.query;
   try {
-    const sql = "SELECT * FROM usuarios WHERE nombre = ?";
-    const [rows] = await pool.query(sql, [nombre]);
-  
+    const sql = "SELECT nombre FROM usuarios WHERE correo = ?";
+    const [rows] = await pool.query(sql, [correo]);
+
     if (rows && rows.length > 0) {
-      // Maneja los resultados aquí
-      res.json(rows);
+      // Extrae solo el nombre de los resultados
+      const nombres = rows.map((row) => row.nombre);
+      res.json(nombres);
     } else {
       res.json({ message: "No se encontraron usuarios con ese nombre." });
     }
@@ -370,8 +370,8 @@ export const getUserInfo = async (req, res) => {
     console.error("Error al ejecutar la consulta:", error);
     res.status(500).json({ error: "Ocurrió un error al procesar la solicitud." });
   }
-  
 };
+
 
 //GET PARA OBTENER AL INVENTARIO 3.5
 export const getProductos = async (req, res) => {
@@ -422,7 +422,7 @@ export const addContrato = async (req, res) => {
       fec_fin,
       estado,
     } = req.body;
-
+    console.log("body", req.body)
     // Insertar el contrato en la base de datos
     const [rows] = await pool.query(
       "INSERT INTO contratos(nombre, cod_cli, fec_ini, fec_fin, estado) VALUES (?, ?, ?, ?, ?)",
@@ -430,7 +430,7 @@ export const addContrato = async (req, res) => {
     );
 
     // Enviar la respuesta con el ID del contrato insertado
-    res.status(201).json({ id: rows.insertId });
+    res.status(201).json({ id: rows.insertId , message: req.body.nombre });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Error en el controlador" });

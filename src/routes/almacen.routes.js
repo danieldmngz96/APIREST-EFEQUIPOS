@@ -73,7 +73,7 @@ router.get("/getProductos", getProductos);
 //por id productos
 router.get("/getProductosById/:id", getProductosById);
 //Contratos
-router.post("/add-contratos", addContrato);
+router.post("/addContratos", addContrato);
 
 
 export default router;
