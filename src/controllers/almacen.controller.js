@@ -437,6 +437,21 @@ export const addContrato = async (req, res) => {
   }
 };
 
+//Agregar productos 2.0
+export const addProducto = async (req, res) => {
+  const { tipo, descripcion, cantidad, valor_uni, peso_uni, area, area_total, peso_total } = req.body;
+
+  try {
+    const sql = `INSERT INTO productos (tipo, descripcion, cantidad, valor_uni, peso_uni, area, area_total, peso_total) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    const values = [tipo, descripcion, cantidad, valor_uni, peso_uni, area, area_total, peso_total];
+    await  pool.query(sql, values);
+    res.json({ status: "Producto agregado" });
+  } catch (error) {
+    console.error("Error al agregar el Producto:", error);
+    return res.status(500).json({ message: "Error al agregar el Producto" });
+  }
+};
+
 
 
 
