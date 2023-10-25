@@ -12,22 +12,25 @@ export const getEmpleados = async (req, res) => {
   }
 };
 
-//agregar empleado 2.0
+//agregar empleado 2.5
 export const createEmpleado = async (req, res) => {
   try {
-    const { nombre, celular, e_mail } = req.body;
+    const { nombre, celular, e_mail, id_cargo, usuario } = req.body;
     const [rows] = await pool.query(
-      "INSERT INTO empleados (nombre, celular,e_mail) VALUES (?, ?,?)",
-      [nombre, celular, e_mail]
-    );
-    res.json({ status: "empleado agregado" });
-  } catch (error) {
-    if (err) throw err;
+      "INSERT INTO empleados (nombre, celular, e_mail, id_cargo, usuario) VALUES (?,?,?,?,?)",
+      [nombre, celular, e_mail, id_cargo, usuario]
+    );    
+    if(rows){
+      res.json({ status: "empleado agregado" });
+    }
+  } catch (error) { // Cambié "err" por "error" en esta línea
+    console.error(error); // Muestra el error en la consola para depuración
     return res
       .status(500)
-      .json({ message: "Error en controlador createEmpleado " });
+      .json({ message: "Error en controlador createEmpleado" });
   }
 };
+
 //get despachos 2.0
 export const getDespachos = async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Página actual
