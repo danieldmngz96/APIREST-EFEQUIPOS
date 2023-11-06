@@ -26,7 +26,9 @@ import {
   getProductos,
   getProductosById,
   addProducto,
-  updateProductos
+  updateProductos,
+  //Obras
+  getObras
 } from "../controllers/almacen.controller.js";
 
 const router = Router();
@@ -80,6 +82,7 @@ router.put("/updateProductos/:id", updateProductos);
 router.post("/addContratos", addContrato);
 // INSERT un productos
 router.post("/addProducto", addProducto);
-
+//get productos
+router.get("/getObras", getObras);
 
 export default router;

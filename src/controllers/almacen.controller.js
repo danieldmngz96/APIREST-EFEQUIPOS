@@ -2,13 +2,30 @@ import { Router } from "express";
 import { pool, pool2 } from "../db.js";
 
 const router = Router();
-//get empleado
+
+//get despachos 2.5
 export const getEmpleados = async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Página actual
+  const limit = parseInt(req.query.limit) || 20; // Número de registros por página
+  const offset = (page - 1) * limit; // Desplazamiento
+
   try {
-    const [rows] = await pool.query("SELECT * FROM almacen.empleados");
-    return res.status(200).json(rows);
+    // Consulta para obtener los registros de la página actual
+    let sql = `SELECT * FROM empleados LIMIT ${limit} OFFSET ${offset}`;
+    const [rows] = await pool.query(sql);
+
+    // Consulta para contar el total de registros en la tabla
+    sql = "SELECT COUNT(*) AS count FROM empleados";
+    const [result] = await pool.query(sql);
+    const total = result[0].count;
+    const totalPages = Math.ceil(total / limit);
+
+    // Devolver los resultados y la información de paginación en un objeto JSON
+    res.json({ total, totalPages, page, limit, offset, rows });
   } catch (error) {
-    return res.status(500).json({ message: "Error en consulta empleados" });
+    return res
+      .status(500)
+      .json({ message: "Error en controlador getEmpleados" });
   }
 };
 
@@ -477,6 +494,28 @@ export const addProducto = async (req, res) => {
   }
 };
 
+//GET PARA OBTENER AL INVENTARIO 3.5
+export const getObras = async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Página actual
+  const limit = parseInt(req.query.limit) || 10; // Número de obras por página
+  const offset = (page - 1) * limit; // Desplazamiento
+
+  try {
+    const [rows] = await pool.query(
+      `SELECT * FROM almacen.obras LIMIT ? OFFSET ?;`,
+      [limit, offset]
+    );
+
+    if (rows.length <= 0) {
+      return res.status(404).json({ message: "No se encontraron obras en el inventario" });
+    } else {
+      return res.status(200).json(rows); // Enviar los obras encontrados como respuesta
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error en la consulta del inventario" });
+  }
+};
 
 
 
