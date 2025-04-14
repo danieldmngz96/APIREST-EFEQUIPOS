@@ -6,23 +6,32 @@ const router = Router();
 //get despachos 2.5
 export const getEmpleados = async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Página actual
-  const limit = parseInt(req.query.limit) || 20; // Número de registros por página
+  const limit = parseInt(req.query.limit) || 10; // Número de registros por página
   const offset = (page - 1) * limit; // Desplazamiento
 
   try {
     // Consulta para obtener los registros de la página actual
-    let sql = `SELECT * FROM empleados LIMIT ${limit} OFFSET ${offset}`;
-    const [rows] = await pool.query(sql);
-
+    // let sql = `SELECT * FROM almacen.empleados LIMIT ${limit} OFFSET ${offset}`;
+    //const [rows] = await pool.query(sql);
+    const [rows] = await pool.query(
+      `SELECT * FROM almacen.empleados LIMIT ? OFFSET ?;`,
+      [limit, offset]
+    );
     // Consulta para contar el total de registros en la tabla
-    sql = "SELECT COUNT(*) AS count FROM empleados";
+/*     sql = "SELECT COUNT(*) AS count FROM empleados";
     const [result] = await pool.query(sql);
     const total = result[0].count;
-    const totalPages = Math.ceil(total / limit);
-
+    const totalPages = Math.ceil(total / limit); */
+    
+    if (rows.length <= 0) {
+      return res.status(404).json({ message: "No se encontraron productos en el empleados" });
+    } else {
+      return res.status(200).json(rows); // Enviar los productos encontrados como respuesta
+    }
     // Devolver los resultados y la información de paginación en un objeto JSON
-    res.json({ total, totalPages, page, limit, offset, rows });
+    //res.json({ total, totalPages, page, limit, offset, rows });
   } catch (error) {
+    console.error(error);
     return res
       .status(500)
       .json({ message: "Error en controlador getEmpleados" });
@@ -399,7 +408,7 @@ export const getUserInfo = async (req, res) => {
 };
 
 
-//GET PARA OBTENER AL INVENTARIO 3.5
+//GET PARA OBTENER AL PRODUCTO DEL INVENTARIO 3.5
 export const getProductos = async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Página actual
   const limit = parseInt(req.query.limit) || 10; // Número de productos por página

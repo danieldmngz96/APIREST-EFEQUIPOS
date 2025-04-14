@@ -11,7 +11,7 @@
     "pretest": "cross-env NODE_ENV=test jest --clearCache"
   },
   "keywords": [],
-  "author": "",
+  "author": "Daniel Dominguez",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
