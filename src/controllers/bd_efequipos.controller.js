@@ -5,7 +5,7 @@ const index = require("./index");
 const bd_efequipos = conexion.bd_efequipos;
 const router = express.Router(); */
 import { Router } from "express";
-import { pool2, pool } from "../db.js";
+import { pool } from "../db.js";
 
 
 const router = Router();
@@ -19,11 +19,11 @@ export const getInventario = async (req, res) => {
   try {
     // Consulta para obtener los registros de la página actual
     let sql = `SELECT * FROM inventario LIMIT ${limit} OFFSET ${offset}`;
-    const [rows] = await  pool2.query(sql);
+    const [rows] = await  pool.query(sql);
 
     // Consulta para contar el total de registros en la tabla
     sql = "SELECT COUNT(*) AS count FROM inventario";
-    const [result] = await  pool2.query(sql);
+    const [result] = await  pool.query(sql);
     const total = result[0].count;
     const totalPages = Math.ceil(total / limit);
 
@@ -38,7 +38,7 @@ export const getInventario = async (req, res) => {
 /* router.get("/:id", (req, res) => {
   const { id } = req.params;
   let sql = "select * from inventario where id_inventario = ?";
-   pool2.query(sql, [id], (err, rows, fields) => {
+   pool.query(sql, [id], (err, rows, fields) => {
     if (err) throw err;
     else {
       res.json(rows);
@@ -49,7 +49,7 @@ export const getInventario = async (req, res) => {
 export const getInventarioById = async (req, res) => {
   const { id } = req.params;
   try {
-    const [rows] = await pool2.query(`SELECT * FROM almacen.inventario as c WHERE c.id_inventario = ${id};`);
+    const [rows] = await pool.query(`SELECT * FROM almacen.inventario as c WHERE c.id_inventario = ${id};`);
     if (rows.length <= 0) {
       return res.status(404).json({ message: "No se encontraron el inventario" });
     }
@@ -64,7 +64,7 @@ export const getInventarioById = async (req, res) => {
     req.body;
 
   let sql = `insert into inventario(descripcion,cantidad,peso_kg,area_m2,peso_total,area_total) values('${descripcion}','${cantidad}','${peso_kg}','${area_m2}','${peso_total}','${area_total}')`;
-   pool2.query(sql, (err, rows, fields) => {
+   pool.query(sql, (err, rows, fields) => {
     if (err) throw err;
     else {
       res.json({ status: "Inventario agregado" });
@@ -78,7 +78,7 @@ export const addInventario = async (req, res) => {
   try {
     const sql = `INSERT INTO inventario (descripcion, cantidad, peso_kg, area_m2, peso_total, area_total) VALUES (?, ?, ?, ?, ?, ?)`;
     const values = [descripcion, cantidad, peso_kg, area_m2, peso_total, area_total];
-    await  pool2.query(sql, values);
+    await  pool.query(sql, values);
     res.json({ status: "Inventario agregado" });
   } catch (error) {
     return res.status(500).json({ message: "Error al agregar el inventario" });
@@ -91,7 +91,7 @@ export const addInventario = async (req, res) => {
   const { id } = req.params;
 
   let sql = `delete from tb_equipo where id_equipo = '${id}'`;
-   pool2.query(sql, (err, rows, fields) => {
+   pool.query(sql, (err, rows, fields) => {
     if (err) throw err;
     else {
       res.json({ status: "equipo eliminado" });
@@ -103,7 +103,7 @@ export const deleteEquipo = async (req, res) => {
   const { id } = req.params;
   try {
     const sql = `DELETE FROM tb_equipo WHERE id_equipo = ?`;
-    await  pool2.query(sql, [id]);
+    await  pool.query(sql, [id]);
     res.json({ status: "Equipo eliminado" });
   } catch (error) {
     return res.status(500).json({ message: "Error al eliminar el equipo" });
@@ -117,7 +117,7 @@ export const deleteEquipo = async (req, res) => {
 
   let sql = `UPDATE inventario SET descripcion = ?, cantidad = ?, peso_kg = ?, area_m2 = ?, peso_total = ?, area_total = ? WHERE id_inventario = ?`;
 
-   pool2.query(sql, [descripcion, cantidad, peso_kg, area_m2, peso_total, area_total, id], (err, rows, fields) => {
+   pool.query(sql, [descripcion, cantidad, peso_kg, area_m2, peso_total, area_total, id], (err, rows, fields) => {
     if (err) {
       throw err;
     } else {
@@ -132,7 +132,7 @@ export const updateInventario = async (req, res) => {
 
   try {
     const sql = `UPDATE inventario SET descripcion = ?, cantidad = ?, peso_kg = ?, area_m2 = ?, peso_total = ?, area_total = ? WHERE id_inventario = ?`;
-    await  pool2.query(sql, [descripcion, cantidad, peso_kg, area_m2, peso_total, area_total, id]);
+    await  pool.query(sql, [descripcion, cantidad, peso_kg, area_m2, peso_total, area_total, id]);
     res.json({ status: "Inventario modificado" });
   } catch (error) {
     return res.status(500).json({ message: "Error al modificar el inventario" });
@@ -147,7 +147,7 @@ export const registerUser = async (req, res) => {
 
   try {
     const sql = `INSERT INTO users (email, password, name) VALUES (?, ?, ?)`;
-    await  pool2.query(sql, [email, password, name]);
+    await  pool.query(sql, [email, password, name]);
     res.json({ status: "Registrado con éxito" });
   } catch (error) {
     throw error;
@@ -161,7 +161,7 @@ export const registerUser = async (req, res) => {
 
   // Verificar si el correo electrónico y la contraseña son válidos
   let sql = `SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`;
-   pool2.query(sql, (err, rows, fields) => {
+   pool.query(sql, (err, rows, fields) => {
     if (err) {
       console.log(err);
       res.status(500).json({ error: "Error interno del servidor" });
@@ -207,7 +207,7 @@ export const loginUser = async (req, res) => {
 /* router.get("/info", (req, res) => {
   const { name } = req.body;
   let sql = `SELECT * FROM users WHERE name = '${name}'`;
-   pool2.query(sql, (err, rows, fields) => {
+   pool.query(sql, (err, rows, fields) => {
     if (err) throw err;
     else {
       res.json(rows);
@@ -220,7 +220,7 @@ export const loginUser = async (req, res) => {
 
   try {
     const sql = `SELECT * FROM users WHERE name = ?`;
-    const [rows] = await pool2.query(sql, [name]);
+    const [rows] = await pool.query(sql, [name]);
     res.json(rows);
   } catch (error) {
     throw error;
@@ -231,7 +231,7 @@ export const loginUser = async (req, res) => {
 /* router.get("/validateEmail/:email", (req, res) => {
   const email = req.params.email;
   let sql = `SELECT * FROM users WHERE email = '${email}'`;
-   pool2.query(sql, (err, rows, fields) => {
+   pool.query(sql, (err, rows, fields) => {
     if (err) throw err;
     else {
       if (rows.length > 0) {
@@ -254,7 +254,7 @@ export const validateEmail = async (req, res) => {
 
   try {
     const sql = `SELECT * FROM users WHERE email = ?`;
-    const [rows] = await  pool2.query(sql, [email]);
+    const [rows] = await  pool.query(sql, [email]);
 
     if (rows.length > 0) {
       res.status(200).json({
